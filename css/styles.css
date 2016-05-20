@@ -1,0 +1,7 @@
+@media only screen and (max-width: 500px) {
+    #restaurantPanel{
+        width: 40%;
+        font-size: smaller;
+    }
+
+}

@@ -17,6 +17,11 @@ var renderMap = function () {
     }
 };
 
+//Setting the timeout function for failedRequest in jsonp
+var restaurantRequestTimeOut = setTimeout(function () {
+    alert('Restaurants cannot be displayed');
+}, 10000);
+
 // Call the Locu Api and display the locations on the google Map.
 // This call always executes after the map is loaded as it is called renderMap promise
 var displayRestaurant = function (map) {
@@ -32,10 +37,10 @@ var displayRestaurant = function (map) {
             dataType: 'jsonp',
             jsonp: 'callback',
             success: function (data) {
+                clearTimeout(restaurantRequestTimeOut);
                 return resolve(processData(data, map));
             },
             error: function (err) {
-                alert('err');
                 return reject(err);
             }
         });

@@ -1,5 +1,4 @@
 "use strict";
-
 function MapViewModel() {
     // Variable Initialization
     var self = this;
@@ -88,6 +87,9 @@ function MapViewModel() {
         var url = 'http://api.openweathermap.org/data/2.5/weather?q=saintluis,mo&appid=bc7fdd8d57dee9e264567551c7ff0a18';
         $.getJSON(url, function (data) {
             self.temperature(Math.round(data.main.temp) - 273);
+        }).fail(function() {
+            console.log('Weather not available.');
+            //Doing nothing as this has fall back property 'unavailable' and to prevent multiple alert boxes.
         });
     };
     self.getTemperature();
