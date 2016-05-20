@@ -4,7 +4,7 @@
 var renderMap = function () {
 
     try {
-        $('#map-canvas').css('height', window.innerHeight - 50 + 'px');
+         $('#map-canvas').css('height', window.innerHeight + 'px');
         var map = new google.maps.Map(document.getElementById('map-canvas'), {
             center: {lat: 38.6068867843944, lng: -90.28923873853023},
             zoom: 11,
