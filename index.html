@@ -5,8 +5,6 @@
     <meta charset="utf-8">
 
     <title>Neighbourhood Map</title>
-
-    <script src="lib/jquery-1.7.1.min.js"></script>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css" type="text/css">
 </head>
@@ -24,21 +22,21 @@
     </nav>
 </div>
 <div class="container-fluid">
-    <div id="restaurantPanel" class="container-fluid" style="z-index: 100; position: absolute; width: 20%;">
+    <div class="col-md-3 col-sm-5" id="restaurantPanel" class="container-fluid" style="z-index: 100; position: absolute;">
         <div class="collapseControl" style="display:none;">
             <img data-bind="click: onClickCollapseControl" src="images/arrow-right.png"
                  title="Click to see Restaurant Panel">
         </div>
-        <div class="container pinPanel">
+        <div class="container pin-panel">
             <input id="searchBox" placeholder="Search Restaurant" type="text"
                    data-bind="value: query, valueUpdate: 'afterkeydown', event: { keyup: filter}"
                    style="width:100%;height: 40px;margin-bottom: 1px; border-radius: 15px; color: darkseagreen;">
         </div>
-        <div class="pinPanel">
+        <div class="pin-panel">
             <ul class="nav nav-pills nav-stacked" id="restaurantList" data-bind="foreach: placeNames"
                 style="overflow-y: scroll">
-                <li data-bind="click: $parent.onClickRestaurant" role="presentation" class="active">
-                    <a target="_blank" data-bind="text: $data"></a>
+                <li data-bind="click: $parent.onClickRestaurant" role="presentation" style="background-color: white; opacity: 0.8;">
+                    <a target="_blank" data-bind="text: $data" style="color: black"></a>
                 </li>
             </ul>
         </div>
@@ -46,6 +44,7 @@
     <div id="map-canvas" style="width: 100%; height:100vh;"></div>
 </div>
 
+<script src="lib/jquery-1.7.1.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js" type="text/javascript"></script>
 <script src="js/map.js"></script>
 <script src="js/app.js"></script>

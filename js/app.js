@@ -17,6 +17,7 @@ function MapViewModel() {
         renderMap().then(function (response) {
             self.map = response;
             self.displayMarkers();
+            self.currentInfoWindow = new google.maps.InfoWindow();
         }, function (error) {
             alert(error);
         });
@@ -49,14 +50,13 @@ function MapViewModel() {
         if (placeName === undefined || placeName === null)
             placeName = this;
 
-        var index = self.placeNames.indexOf(placeName);
+        var index = self.placeDescriptionList.indexOf(placeName);
         self.animateMarker(index);
         self.displayInfoWindow(index);
     };
 
     self.displayInfoWindow = function (index) {
         var content = "No Data Found";
-        var infowindow = new google.maps.InfoWindow();
         if (index != -1) {
             var marker = self.markers[index];
             if (self.currentInfoWindow != null)
@@ -64,9 +64,8 @@ function MapViewModel() {
             var placeDetails = self.placeDescriptionList[index];
             content = "<div><b>" + placeDetails.name + "</b><hr><b> Website: <a target='_blank' href='" + placeDetails.website_url + ' \'>' + placeDetails.website_url + '</a> <br> Address: ' + placeDetails.street_address + '<br> Phone: ' + placeDetails.phone + "</b> </div>";
         }
-        infowindow.setContent(content);
-        self.currentInfoWindow = infowindow;
-        infowindow.open(self.map, marker);
+        self.currentInfoWindow.setContent(content);
+        self.currentInfoWindow.open(self.map, marker);
     };
 
     // Setting marker Animation
@@ -103,7 +102,7 @@ function MapViewModel() {
 
     self.onClickCollapseControl = function () {
         $('.collapseControl').css('display', 'none');
-        $('.pinPanel').css('display', 'block');
+        $('.pin-panel').css('display', 'block');
     };
 
     self.getTemperature = function () {
@@ -124,10 +123,10 @@ $(window).resize(function () {
     var windowWidth = $(window).width();
     if (windowWidth < 600) {
         $('.collapseControl').css('display', 'block');
-        $('.pinPanel').css('display', 'none');
+        $('.pin-panel').css('display', 'none');
     } else {
         $('.collapseControl').css('display', 'none');
-        $('.pinPanel').css('display', 'block');
+        $('.pin-panel').css('display', 'block');
     }
 });
 
