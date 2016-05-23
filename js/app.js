@@ -34,8 +34,9 @@ function MapViewModel() {
 
     // Pushing data in observable properties
     self.pushData = function (response) {
-        if (response !== null || response !== undefined)
+        if (response !== null || response !== undefined){
             var placesList = response.places;
+        }
         var placeDescriptionList = response.placeDescriptionList;
         var markerList = response.markers;
         for (var i = 0; i < placesList.length; i++) {
@@ -47,12 +48,14 @@ function MapViewModel() {
 
     // OnClick Event Handler for Restaurant List
     self.onClickRestaurant = function (placeName) {
-        if (placeName === undefined || placeName === null)
+        if (placeName === undefined || placeName === null){
             placeName = this;
+        }
         var index = -1;
         for(var i=0;i<self.placeDescriptionList.length; i++){
-           if(self.placeDescriptionList[i].name === placeName)
+           if(self.placeDescriptionList[i].name === placeName){
                index = i;
+           }
         }
         self.animateMarker(index);
         self.displayInfoWindow(index);
@@ -62,8 +65,9 @@ function MapViewModel() {
         var content = "No Data Found";
         if (index != -1) {
             var marker = self.markers[index];
-            if (self.currentInfoWindow != null)
+            if (self.currentInfoWindow != null){
                 self.currentInfoWindow.close();
+            }
             var placeDetails = self.placeDescriptionList[index];
             content = "<div><b>" + placeDetails.name + "</b><hr><b> Website: <a target='_blank' href='" + placeDetails.website_url + ' \'>' + placeDetails.website_url + '</a> <br> Address: ' + placeDetails.street_address + '<br> Phone: ' + placeDetails.phone + "</b> </div>";
         }
@@ -92,8 +96,9 @@ function MapViewModel() {
     // Filtering
     self.filter = function (data, event) {
         // Closing if any window is open
-        if(self.currentInfoWindow !== null)
+        if(self.currentInfoWindow !== null){
             self.currentInfoWindow.close();
+        }
 
         var filter = self.query().toLowerCase();
         self.placeNames.splice(0, self.placeNames().length);
