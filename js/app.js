@@ -107,7 +107,7 @@ function MapViewModel() {
     };
 
     self.getTemperature = function () {
-        var url = 'https://api.openweathermap.org/data/2.5/weather?q=saintluis,mo&appid=bc7fdd8d57dee9e264567551c7ff0a18';
+        var url = 'http://api.openweathermap.org/data/2.5/weather?q=saintluis,mo&appid=bc7fdd8d57dee9e264567551c7ff0a18';
         $.getJSON(url, function (data) {
             self.temperature(Math.round(data.main.temp) - 273);
         }).fail(function () {
