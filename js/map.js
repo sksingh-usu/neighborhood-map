@@ -36,7 +36,7 @@ var displayRestaurant = function (map) {
             alert("Something is wrong with google Maps! Please try Again");
             reject('-1');
         }
-        var url = 'http://api.locu.com/v1_0/venue/search/?locality=saint+louis&category=restaurant&api_key=b827df72109febb7e8fd45f4ce3baaac2861f692';
+        var url = 'https://api.locu.com/v1_0/venue/search/?locality=saint+louis&category=restaurant&api_key=b827df72109febb7e8fd45f4ce3baaac2861f692';
         $.ajax({
             url: url,
             type: "GET",
