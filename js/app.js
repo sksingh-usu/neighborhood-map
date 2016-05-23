@@ -49,8 +49,11 @@ function MapViewModel() {
     self.onClickRestaurant = function (placeName) {
         if (placeName === undefined || placeName === null)
             placeName = this;
-
-        var index = self.placeDescriptionList.indexOf(placeName);
+        var index = -1;
+        for(var i=0;i<self.placeDescriptionList.length; i++){
+           if(self.placeDescriptionList[i].name === placeName)
+               index = i;
+        }
         self.animateMarker(index);
         self.displayInfoWindow(index);
     };
@@ -88,6 +91,10 @@ function MapViewModel() {
 
     // Filtering
     self.filter = function (data, event) {
+        // Closing if any window is open
+        if(self.currentInfoWindow !== null)
+            self.currentInfoWindow.close();
+
         var filter = self.query().toLowerCase();
         self.placeNames.splice(0, self.placeNames().length);
         for (var i = 0; i < self.placeDescriptionList.length; i++) {
