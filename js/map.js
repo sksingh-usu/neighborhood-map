@@ -1,20 +1,26 @@
-'use strict';
+"use strict";
 
 //Render the map in the div
+/*
+Moved the call in promise to get it called from callback of google API.
+Once the promise is complete then only restaurant will be displayed
+ */
 var renderMap = function () {
+    return new Promise(function (resolve, reject) {
+        try{
+            $('#map-canvas').css('height', window.innerHeight + 'px');
+            var map = new google.maps.Map(document.getElementById('map-canvas'), {
+                center: {lat: 38.6068867843944, lng: -90.28923873853023},
+                zoom: 11,
+                disableDefaultUI: true,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
 
-    try {
-         $('#map-canvas').css('height', window.innerHeight + 'px');
-        var map = new google.maps.Map(document.getElementById('map-canvas'), {
-            center: {lat: 38.6068867843944, lng: -90.28923873853023},
-            zoom: 11,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
-        return map;
-    }
-    catch (err) {
-        alert('Map cannot be loaded. Please try again');
-    }
+            return  resolve(map);
+        } catch(err) {
+         return   reject("'Map cannot be loaded. Please try again");
+        }
+    });
 };
 
 //Setting the timeout function for failedRequest in jsonp
@@ -63,6 +69,10 @@ var processData = function (data, map) {
         var myLatLng = {lat: lat, lng: long};
         var marker = new google.maps.Marker({
             position: myLatLng
+        });
+        marker.placeName = restaurants[i].name;
+        marker.addListener('click', function () {
+            viewModel.onClickRestaurant(this.placeName);
         });
         var placeDetails = {};
         placeDetails.website_url = restaurants[i].website_url;
