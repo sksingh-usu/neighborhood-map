@@ -62,7 +62,7 @@ function MapViewModel() {
             if (self.currentInfoWindow != null)
                 self.currentInfoWindow.close();
             var placeDetails = self.placeDescriptionList[index];
-            content = "<div><b>" + placeDetails.name + "</b><hr><b> Website: <a href='" + placeDetails.website_url + ' \'>' + placeDetails.website_url + '</a> <br> Address: ' + placeDetails.street_address + '<br> Phone: ' + placeDetails.phone + "</b> </div>";
+            content = "<div><b>" + placeDetails.name + "</b><hr><b> Website: <a target='_blank' href='" + placeDetails.website_url + ' \'>' + placeDetails.website_url + '</a> <br> Address: ' + placeDetails.street_address + '<br> Phone: ' + placeDetails.phone + "</b> </div>";
         }
         infowindow.setContent(content);
         self.currentInfoWindow = infowindow;
