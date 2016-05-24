@@ -9,7 +9,7 @@ Neighbourhood Map
 ### Project Setup###
 
  - Copy the repo in your system and double click on index.html.
- -  You can check the Live Demo [here](https://https://github.com/sksingh-usu/neighborhood-map)
+ -  You can check the Live Demo [here](http://github.com/sksingh-usu/neighborhood-map)
 
 ### Navigation###
 
