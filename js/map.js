@@ -23,32 +23,18 @@ var renderMap = function () {
     });
 };
 
-//Setting the timeout function for failedRequest in jsonp
-var restaurantRequestTimeOut = setTimeout(function () {
-    alert('Restaurants cannot be displayed');
-}, 10000);
 
 // Call the Locu Api and display the locations on the google Map.
 // This call always executes after the map is loaded as it is called renderMap promise
 var displayRestaurant = function (map) {
     return new Promise(function (resolve, reject) {
-        if (map == undefined || map == null) {
-            alert("Something is wrong with google Maps! Please try Again");
-            reject('-1');
-        }
-        var url = 'https://api.locu.com/v1_0/venue/search/?locality=saint+louis&category=restaurant&api_key=b827df72109febb7e8fd45f4ce3baaac2861f692';
+        var url = 'http://api.locu.com/v1_0/venue/search/?locality=saint+louis&category=restaurant&api_key=b827df72109febb7e8fd45f4ce3baaac2861f692';
         $.ajax({
-            url: url,
-            type: "GET",
-            dataType: 'jsonp',
-            jsonp: 'callback',
-            success: function (data) {
-                clearTimeout(restaurantRequestTimeOut);
-                return resolve(processData(data, map));
-            },
-            error: function (err) {
-                return reject(err);
-            }
+            url: url, type: "GET", dataType: 'jsonp', jsonp: 'callback'
+        }).done(function (data) {
+            return resolve(processData(data, map));
+        }).fail(function (jqXHR, textStatus) {
+            return reject(textStatus);
         });
     });
 };
