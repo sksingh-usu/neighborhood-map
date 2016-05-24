@@ -17,6 +17,7 @@ function MapViewModel() {
         renderMap().then(function (response) {
             self.map = response;
             self.displayMarkers();
+            self.currentInfoWindow = new google.maps.InfoWindow();
         }, function (error) {
             alert(error);
         });
@@ -33,8 +34,10 @@ function MapViewModel() {
 
     // Pushing data in observable properties
     self.pushData = function (response) {
-        if (response !== null || response !== undefined)
-            var placesList = response.places;
+        var placesList = [];
+        if (response !== null || response !== undefined) {
+            placesList = response.places;
+        }
         var placeDescriptionList = response.placeDescriptionList;
         var markerList = response.markers;
         for (var i = 0; i < placesList.length; i++) {
@@ -46,28 +49,42 @@ function MapViewModel() {
 
     // OnClick Event Handler for Restaurant List
     self.onClickRestaurant = function (placeName) {
-        if (placeName === undefined || placeName === null)
+        if (placeName === undefined || placeName === null) {
             placeName = this;
-
-        var index = self.placeNames.indexOf(placeName);
+        }
+        var index = -1;
+        for (var i = 0; i < self.placeDescriptionList.length; i++) {
+            if (self.placeDescriptionList[i].name === placeName) {
+                index = i;
+            }
+        }
         self.animateMarker(index);
         self.displayInfoWindow(index);
     };
 
     self.displayInfoWindow = function (index) {
         var content = "No Data Found";
-        var infowindow = new google.maps.InfoWindow();
+        var marker = null;
         if (index != -1) {
-            var marker = self.markers[index];
-            if (self.currentInfoWindow != null)
+            marker = self.markers[index];
+            if (self.currentInfoWindow !== null) {
                 self.currentInfoWindow.close();
+            }
             var placeDetails = self.placeDescriptionList[index];
-            content = "<div><b>" + placeDetails.name + "</b><hr><b> Website: <a target = '_blank' href='" + placeDetails.website_url + ' \'>' + placeDetails.website_url + '</a> <br> Address: ' + placeDetails.street_address + '<br> Phone: ' + placeDetails.phone + "</b> </div>";
+            content = "<div><b>" + placeDetails.name + "</b><hr><b> Website: <a target='_blank' href='" + placeDetails.website_url + ' \'>' + placeDetails.website_url + '</a> <br> Address: ' + placeDetails.street_address + '<br> Phone: ' + placeDetails.phone + "</b> </div>";
+            self.currentInfoWindow.setContent(content);
+            self.currentInfoWindow.open(self.map, marker);
+            self.map.setCenter(marker.getPosition());
+            self.toggleList();
         }
-        infowindow.setContent(content);
-        self.currentInfoWindow = infowindow;
-        infowindow.open(self.map, marker);
     };
+
+    self.toggleList = function () {
+        if ($(window).width() < 600) {
+            $('.collapseControl').css('display', 'block');
+            $('.pin-panel').css('display', 'none');
+        }
+    }
 
     // Setting marker Animation
     self.animateMarker = function (index) {
@@ -83,27 +100,33 @@ function MapViewModel() {
 
     self.stopAnimation = function (marker) {
         setTimeout(function () {
-            marker.setAnimation(null)
-        }, 2000);
+            marker.setAnimation(null);
+        }, 1400);
     };
 
     // Filtering
     self.filter = function (data, event) {
+        // Closing if any window is open
+        if (self.currentInfoWindow !== null) {
+            self.currentInfoWindow.close();
+        }
+
         var filter = self.query().toLowerCase();
         self.placeNames.splice(0, self.placeNames().length);
         for (var i = 0; i < self.placeDescriptionList.length; i++) {
             if (self.placeDescriptionList[i].name.toLowerCase().indexOf(filter) != -1) {
                 self.placeNames.push(self.placeDescriptionList[i].name);
-                self.markers[i].setMap(self.map);
+                self.markers[i].setVisible(true);
             } else {
-                self.markers[i].setMap(null);
+                self.markers[i].setVisible(false);
             }
         }
     };
 
     self.onClickCollapseControl = function () {
         $('.collapseControl').css('display', 'none');
-        $('.pinPanel').css('display', 'block');
+        $('.pin-panel').css('display', 'block');
+        self.currentInfoWindow.close();
     };
 
     self.getTemperature = function () {
@@ -116,18 +139,21 @@ function MapViewModel() {
         });
     };
 
+    self.onMapLoadError = function () {
+        alert("Maps cannot be loaded. Please try Again");
+        $('.content').css('display', 'none');
+    };
     self.getTemperature();
 }
 
 $(window).resize(function () {
-    console.log("<div>Handler for .resize() called.</div>");
     var windowWidth = $(window).width();
     if (windowWidth < 600) {
         $('.collapseControl').css('display', 'block');
-        $('.pinPanel').css('display', 'none');
+        $('.pin-panel').css('display', 'none');
     } else {
         $('.collapseControl').css('display', 'none');
-        $('.pinPanel').css('display', 'block');
+        $('.pin-panel').css('display', 'block');
     }
 });
 
