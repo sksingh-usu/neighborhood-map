@@ -74,7 +74,7 @@ var processData = function (data, map) {
     mapContent.places = places;
     mapContent.markers = markers;
     mapContent.placeDescriptionList = placeDescriptionList;
-    url = 'http://api.uber.com/v1/estimates/price?start_latitude=37.625732&start_longitude=-122.377807&end_latitude=37.785114&end_longitude=-122.406677&server_token=rPwzR5poT04qrH28gyDvX6zGf1Cx3IvZajTUpzwW';
+    var url = 'http://api.uber.com/v1/estimates/price?start_latitude=37.625732&start_longitude=-122.377807&end_latitude=37.785114&end_longitude=-122.406677&server_token=rPwzR5poT04qrH28gyDvX6zGf1Cx3IvZajTUpzwW';
     //url = url + '&server_token=' + uberServerToken;
 
     $.ajax({
